@@ -21,7 +21,7 @@ jobs:
       with:
         host: '3.88.107.254'
         user: 'ec2-user'
-        pass: ${{secrets.TOMCATVM_PASSWORD}}
+        key: ${{secrets.SSH_KEY}}
         port: 22
         connect_timeout: 10s
         first_ssh: |
