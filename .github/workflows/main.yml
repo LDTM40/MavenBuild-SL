@@ -29,6 +29,6 @@ jobs:
         scp: |
           './target/*war' => /opt/tomcat9/webapps
         last_ssh: |
-          sudo systemctl restart tomcat9
+          sudo sh /opt/tomcat9/bin/startup.sh
 
 
