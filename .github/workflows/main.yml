@@ -1,6 +1,6 @@
 name: CICD using Maven and tomcat
 on:
- #push:  # run when there is commit to repo
+ push:  # run when there is commit to repo
  workflow_dispatch:  # run manually
 jobs:
  CICDjob:
@@ -38,5 +38,3 @@ jobs:
         token: ${{secrets.JENKINS_TOKEN}}
         job: "TomcatDeployment"
         
-
-
