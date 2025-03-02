@@ -31,10 +31,12 @@ jobs:
         last_ssh: |
           sudo systemctl restart tomcat9
     - name: Invoke Jenkins Deployment Job
-      uses: appleboy/jenkins.action@master
+      uses: cross-the-world/ssh-scp-ssh-pipelines@latest
       with:
         url: "http://3.85.92.90:8080/"
         user: "admin"
         token: ${{secrets.JENKINS_TOKEN}}
+        first_ssh: |
+          curl -l -u admin:${{secrets.JENKINS_TOKEN}}http://3.85.92.90:8080/job/TomcatDeployment%20GitHubActions_Jenkins%20Pipeline/build?token=token123  
         job: "TomcatDeployment"
         
