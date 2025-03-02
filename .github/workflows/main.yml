@@ -1,6 +1,6 @@
 name: CICD using Maven and tomcat
 on:
- #push:  # run when there is commit to repo
+ push:  # run when there is commit to repo
  workflow_dispatch:  # run manually
 jobs:
  CICDjob:
@@ -19,7 +19,7 @@ jobs:
     - name: Connect to Lab machine and Deploy the code on tomcat9 
       uses: cross-the-world/ssh-scp-ssh-pipelines@latest
       with:
-        host: '54.90.196.217'
+        host: '54.165.205.70'
         user: 'ec2-user'
         key: ${{secrets.SSH_KEY}}
         port: 22
