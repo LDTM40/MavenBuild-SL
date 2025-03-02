@@ -30,3 +30,12 @@ jobs:
           './target/*war' => /opt/tomcat9/webapps
         last_ssh: |
           sudo sh /opt/tomcat9/bin/startup.sh
+    - name: Invoke Jenkins Deployment Job
+      uses: cross-the-world/ssh-scp-ssh-pipelines@latest
+      with:
+        url: "http://3.85.92.90:8080/"
+        user: "admin"
+        token: ${{secrets.JENKINS_TOKEN}}
+        first_ssh: |
+          curl -l -u admin:${{secrets.JENKINS_TOKEN}}http://3.85.92.90:8080/job/TomcatDeployment%20GitHubActions_Jenkins%20Pipeline/build?token=token123  
+        job: "TomcatDeployment"      
