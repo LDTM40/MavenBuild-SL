@@ -1,6 +1,6 @@
 name: CICD using Maven and tomcat
 on:
- push:  # run when there is commit to repo
+ #push:  # run when there is commit to repo
  workflow_dispatch:  # run manually
 jobs:
  CICDjob:
@@ -8,7 +8,7 @@ jobs:
    steps:
     - name: Clone the repo on ubuntu server
       uses: actions/checkout@v4
-    - name: Install Java and maven on ubuntu server
+    - name: Install Java and Maven on ubuntu server
       uses: actions/setup-java@v4
       with:
        distribution: 'temurin'
@@ -16,19 +16,27 @@ jobs:
        cache: 'maven'
     - name: Build the code 
       run: mvn package
-    - name: Connect to Lab machine and Deploy the code on tomcat9 
+    - name: Connect to Lab machine and Deploy the code on tomcat9
       uses: cross-the-world/ssh-scp-ssh-pipelines@latest
       with:
-        host: '3.88.107.254'
-        user: 'ec2-user'
-        key: ${{secrets.SSH_KEY}}
-        port: 22
+        host: ${{secrets.HOST}}
+        user: ${{secrets.USERNAME}}
+        pass: ${{secrets.LAB_PASSWORD}}
+        port: ${{secrets.PORT}}
         connect_timeout: 10s
         first_ssh: |
-          sudo chmod 777 /opt/tomcat9/webapps    
+          sudo chmod 777 /var/lib/tomcat9/webapps    
         scp: |
-          './target/*war' => /opt/tomcat9/webapps
+          './target/*war' => /var/lib/tomcat9/webapps
         last_ssh: |
-          sudo sh /opt/tomcat9/bin/startup.sh
+          sudo systemctl restart tomcat9
+    - name: Invoke Jenkins Deployment Job
+      uses: appleboy/jenkins.action@master
+      with:
+        url: "http://3.85.92.90:8080/"
+        user: "admin"
+        token: ${{secrets.JENKINS_TOKEN}}
+        job: "TomcatDeployment"
+        
 
 
